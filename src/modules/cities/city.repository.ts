@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
 import { Repository, DataSource } from 'typeorm';
 import { CreateCityDto } from './dto/create-city.dto';
 import { CityEntity } from './entities/city.entity';
 import { InjectDataSource } from '@nestjs/typeorm';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class CityRepository extends Repository<CityEntity> {
@@ -12,17 +12,7 @@ export class CityRepository extends Repository<CityEntity> {
   async getById(id: number): Promise<CityEntity> {
     return this.findOne({ where: { id } });
   }
-  async deleteCity(city: CityEntity): Promise<boolean> {
-    const cityDeleted = await this.delete(city);
 
-    if (cityDeleted) return true;
-    return false;
-  }
-
-  async updateCity(city: CityEntity): Promise<CityEntity> {
-    const cityUpdate = await this.save(city);
-    return cityUpdate;
-  }
   async getByAll(): Promise<CityEntity[]> {
     return this.find();
   }
@@ -33,5 +23,17 @@ export class CityRepository extends Repository<CityEntity> {
     city.name = newCity.name;
 
     await this.save(city);
+  }
+
+  async updateCity(city: CityEntity): Promise<CityEntity> {
+    const cityUpdate = await this.save(city);
+    return cityUpdate;
+  }
+
+  async deleteCity(city: CityEntity): Promise<boolean> {
+    const cityDeleted = await this.delete(city);
+
+    if (cityDeleted) return true;
+    return false;
   }
 }
